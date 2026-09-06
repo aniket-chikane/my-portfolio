@@ -99,7 +99,7 @@ const navItems = [
 ];
 
 const githubUrl = 'https://github.com/aniket-chikane?tab=repositories';
-const COMPILER_API = '';
+const COMPILER_API = 'http://localhost:4174/compile';
 const compilerLanguages = {
   python: {
     label: 'Python',
@@ -444,15 +444,8 @@ function App() {
   };
 
   const runCompiler = async () => {
-    const selectedLanguage = compilerLanguages[compilerLanguage];
     setCompilerStatus('running');
     setCompilerOutput('Compiling and running...');
-
-    if (!COMPILER_API) {
-      setCompilerStatus('error');
-      setCompilerOutput('Online execution is not connected. This static portfolio needs a secure backend compiler endpoint for Python, Java, and C++.');
-      return;
-    }
 
     try {
       const response = await fetch(COMPILER_API, {
@@ -460,8 +453,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           language: compilerLanguage,
-          version: selectedLanguage.version,
-          files: [{ name: compilerLanguage === 'java' ? 'Main.java' : `main.${compilerLanguage}`, content: compilerCode }]
+          code: compilerCode
         })
       });
 
@@ -470,14 +462,10 @@ function App() {
       }
 
       const result = await response.json();
-      const compileOutput = result.compile?.output || result.compile?.stderr || '';
-      const runOutput = result.run?.output || result.run?.stderr || '';
-      const output = [compileOutput, runOutput].filter(Boolean).join('\n');
-
-      setCompilerOutput(output || 'Program finished without output.');
-      setCompilerStatus(result.run?.code === 0 ? 'success' : 'error');
+      setCompilerOutput(result.output || 'Program finished without output.');
+      setCompilerStatus(result.status === 'success' ? 'success' : 'error');
     } catch (error) {
-      setCompilerOutput(`Unable to run the code. ${error.message} Please try again.`);
+      setCompilerOutput('Compiler server is not running. Start compiler_server.py, then try again.');
       setCompilerStatus('error');
     }
   };
@@ -830,7 +818,7 @@ function App() {
                     <pre aria-live="polite" className={`compiler-output ${compilerStatus}`}>{compilerOutput}</pre>
                   </div>
                 </div>
-                <p id="compiler-note" className="compiler-note">The editor is ready for a secure compiler backend. Never enter passwords, API keys, or private data into a code runner.</p>
+                <p id="compiler-note" className="compiler-note">Start <code>python3 compiler_server.py</code> locally before running code. Never enter passwords, API keys, or private data into a code runner.</p>
               </div>
             </section>
           )}
