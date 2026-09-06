@@ -149,10 +149,12 @@ body.theme-venom {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   font-family: 'Inter', sans-serif;
   background-color: var(--bg);
   background-image:
@@ -1203,6 +1205,24 @@ a {
 }
 
 @media (max-width: 640px) {
+  .theme-switcher {
+    width: 100%;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .theme-btn:hover,
+  .theme-btn.preview {
+    animation: none;
+    transform: none;
+  }
+
+  .theme-btn:hover .theme-label-text,
+  .theme-btn.preview .theme-label-text,
+  .theme-btn.preview .theme-preview-info {
+    display: none;
+  }
+
   .hero-card,
   .panel,
   .card,
