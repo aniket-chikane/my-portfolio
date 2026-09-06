@@ -50,9 +50,12 @@ const experiences = [
   }
 ];
 
+const CONTACT_EMAIL = 'Aniketchikane007@gmail.com';
+const emailLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Portfolio enquiry')}&body=${encodeURIComponent('Hi Aniket,\n\nI would like to get in touch with you about ')}`;
+
 const contactItems = [
   { icon: '📍', text: 'Pune, MH • Open to relocation' },
-  { icon: '📧', text: 'Aniketchikane007@gmail.com', href: 'mailto:Aniketchikane007@gmail.com' },
+  { icon: '📧', text: CONTACT_EMAIL, href: emailLink },
   { icon: '📱', text: '+91 9067103965 (WhatsApp)', href: 'https://wa.me/919067103965' }
 ];
 
@@ -639,12 +642,20 @@ function App() {
                   <p>Let’s connect for opportunities, collaborations, or exciting projects.</p>
                   <div className="contact-list">
                     {contactItems.map((item) => (
-                      <a className="contact-item" key={item.text} href={item.href || '#'}>
-                        <span className="contact-icon">{item.icon}</span>
-                        <span>{item.text}</span>
-                      </a>
+                      item.href ? (
+                        <a className="contact-item" key={item.text} href={item.href}>
+                          <span className="contact-icon">{item.icon}</span>
+                          <span>{item.text}</span>
+                        </a>
+                      ) : (
+                        <div className="contact-item" key={item.text}>
+                          <span className="contact-icon">{item.icon}</span>
+                          <span>{item.text}</span>
+                        </div>
+                      )
                     ))}
                   </div>
+                  <a className="button" href={emailLink}>Send me an email</a>
                   <div className="profile-links">
                     {profiles.map((profile) => (
                       <a className="profile-link" key={profile.name} href={profile.url} target="_blank" rel="noreferrer">
@@ -695,6 +706,7 @@ function App() {
                   role="img"
                   aria-label="Snake game board"
                   onTouchStart={handleTouchStart}
+                  onTouchMove={(event) => event.preventDefault()}
                   onTouchEnd={handleTouchEnd}
                 >
                   {achievement && (
