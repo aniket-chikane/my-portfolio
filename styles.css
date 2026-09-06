@@ -334,6 +334,7 @@ a {
 
 .tab-content {
   padding: 1rem 0 1.5rem;
+  animation: sectionReveal 360ms ease-out;
 }
 
 .hero {
@@ -388,6 +389,14 @@ a {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   border: none;
   cursor: pointer;
+}
+
+.button:active,
+.tab-button:active,
+.mode-btn:active,
+.game-direction:active,
+.theme-btn:active {
+  transform: translateY(2px) scale(0.96);
 }
 
 .button:hover {
@@ -1055,6 +1064,40 @@ a {
   to {
     opacity: 1;
     transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes sectionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button:hover,
+  .tab-button:hover,
+  .mode-btn:hover,
+  .game-direction:hover,
+  .theme-btn:hover {
+    animation: gentleBounce 420ms ease;
+  }
+}
+
+@keyframes gentleBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-4px);
+  }
+  70% {
+    transform: translateY(1px);
   }
 }
 

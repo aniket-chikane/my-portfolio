@@ -398,6 +398,7 @@ function App() {
     setActiveSection(id);
     setMenuOpen(false);
     window.history.pushState(null, '', `#${id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleContactSubmit = (event) => {
