@@ -210,6 +210,17 @@ a {
   flex-wrap: wrap;
 }
 
+.menu-toggle {
+  display: none;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  background: var(--glass);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
 .theme-panel {
   margin: 1rem 0 0.5rem;
   padding: 1rem 1.2rem;
@@ -456,6 +467,26 @@ a {
   margin-top: 1rem;
 }
 
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.skill-group {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.skill-group h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
 .chip {
   padding: 0.65rem 0.9rem;
   border-radius: 999px;
@@ -541,6 +572,14 @@ a {
   margin: 0 0 0.85rem;
 }
 
+.project-role {
+  color: var(--accent) !important;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .card ul {
   display: flex;
   flex-wrap: wrap;
@@ -568,6 +607,14 @@ a {
 
 .project-link:hover {
   text-decoration: underline;
+}
+
+.project-highlights {
+  margin-bottom: 0.75rem !important;
+}
+
+.projects-footer {
+  margin-top: 1rem;
 }
 
 .game-panel {
@@ -1034,6 +1081,53 @@ a {
   flex-wrap: wrap;
 }
 
+.contact-form {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 620px;
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+}
+
+.contact-form h3 {
+  margin: 0 0 0.4rem;
+}
+
+.contact-form label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.menu-toggle:focus-visible,
+.button:focus-visible,
+.tab-button:focus-visible,
+.mode-btn:focus-visible,
+.game-direction:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.contact-form .button {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
 .footer {
   padding: 0.6rem 0 0.8rem;
   color: var(--muted);
@@ -1081,15 +1175,25 @@ a {
   }
 
   .navbar .container {
-    flex-direction: column;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 0.6rem;
     padding: 0.7rem 0;
   }
 
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .nav-links {
-    flex-wrap: wrap;
-    gap: 0.8rem;
+    display: none;
+    grid-column: 1 / -1;
+  }
+
+  .nav-links.open {
+    display: block;
   }
 
   .theme-panel {
@@ -1097,6 +1201,12 @@ a {
   }
 
   .tab-nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tab-button {
     width: 100%;
   }
 
@@ -1106,6 +1216,10 @@ a {
 
   .hero h1 {
     font-size: 1.55rem;
+  }
+
+  .skill-groups {
+    grid-template-columns: 1fr;
   }
 
   .actions {
@@ -1119,6 +1233,14 @@ a {
 
   .contact-panel {
     align-items: flex-start;
+  }
+
+  .contact-form {
+    width: 100%;
+  }
+
+  .contact-form .button {
+    width: 100%;
   }
 
   .game-mode-selector {

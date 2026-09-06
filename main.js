@@ -5,29 +5,51 @@ const projects = [
     title: 'Cyberbullying Detection Using Machine Learning',
     description: 'A team project that detects offensive words in comments on Twitter using JSP, HTML, CSS, Java, JavaScript, and MySQL.',
     stack: ['JSP', 'Java', 'MySQL', 'ML'],
+    role: 'Team project',
+    highlights: ['Comment analysis', 'Offensive-word detection'],
     repo: 'https://github.com/aniket-chikane/cyberbullying-detection'
   },
   {
     title: 'Sport Registration System',
     description: 'A college student registration platform for sports teams built with HTML, CSS, JavaScript, PHP, and MySQL.',
     stack: ['PHP', 'MySQL', 'JavaScript'],
+    role: 'Full-stack project',
+    highlights: ['Student registration', 'Team management'],
     repo: 'https://github.com/aniket-chikane/sport-reg'
   },
   {
     title: 'Library Management System',
     description: 'A Java and MySQL-based system for managing library records with distinct logins for students, admins, and librarians.',
     stack: ['Java', 'MySQL', 'XAMPP'],
+    role: 'Backend project',
+    highlights: ['Role-based access', 'Library records'],
     repo: 'https://github.com/aniket-chikane/Library-Management-System'
   },
   {
     title: 'ATM Simulator with GUI',
     description: 'A Java-based ATM simulation with login-based operations for withdrawals, deposits, and balance inquiries.',
     stack: ['Java', 'GUI'],
+    role: 'Java project',
+    highlights: ['Secure login flow', 'ATM transactions'],
     repo: 'https://github.com/aniket-chikane/AtmGui'
   }
 ];
 
-const skills = ['Java', 'Spring', 'Spring Boot', 'Hibernate', 'REST APIs', 'SOAP', 'SQL', 'RPGLE', 'CL', 'DB2', 'AS400', 'JSF', 'JDBC', 'MySQL', 'MS SQL', 'Git', 'Jira', 'Confluence', 'ISO8583', 'Power BI'];
+const skillGroups = [
+  { title: 'Backend', items: ['Java', 'Spring', 'Spring Boot', 'Hibernate', 'JDBC', 'JSF'] },
+  { title: 'APIs and finance', items: ['REST APIs', 'SOAP', 'ISO8583', 'ATM/POS processing'] },
+  { title: 'IBM i and databases', items: ['RPGLE', 'CL', 'AS400', 'DB2', 'SQL', 'MySQL', 'MS SQL'] },
+  { title: 'Tools and delivery', items: ['Git', 'Jira', 'Confluence', 'Power BI'] }
+];
+
+const certifications = [
+  {
+    title: 'Full Stack Development Certification',
+    issuer: 'Yess Infotech, Pune',
+    detail: 'Java applications, web development, and database integration.'
+  }
+];
+
 const experiences = [
   {
     title: 'Java Developer Trainee',
@@ -74,6 +96,8 @@ const navItems = [
   { id: 'game', label: 'Game' },
   { id: 'relax', label: 'Relax' }
 ];
+
+const githubUrl = 'https://github.com/aniket-chikane?tab=repositories';
 
 const GAME_SIZE = 20;
 
@@ -173,6 +197,7 @@ const createInitialGameState = (mode = 'classic') => {
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState('aurora');
   const [hoveredTheme, setHoveredTheme] = useState(null);
   const [gameState, setGameState] = useState(() => createInitialGameState('classic'));
@@ -371,7 +396,19 @@ function App() {
 
   const handleNavClick = (id) => {
     setActiveSection(id);
+    setMenuOpen(false);
     window.history.pushState(null, '', `#${id}`);
+  };
+
+  const handleContactSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const senderName = formData.get('name');
+    const senderEmail = formData.get('email');
+    const subject = formData.get('subject') || 'Portfolio enquiry';
+    const message = formData.get('message');
+    const body = `Hi Aniket,\n\n${message}\n\nFrom: ${senderName}\nEmail: ${senderEmail}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const activeSnakePalette = themeSnakePalette[theme] || themeSnakePalette.aurora;
@@ -487,7 +524,17 @@ function App() {
       <header className="navbar">
         <div className="container">
           <a className="brand" href="#home">Aniket Balu Chikane</a>
-          <nav className="nav-links">
+          <button
+            className="menu-toggle"
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="portfolio-navigation"
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
+            <span className="sr-only">Toggle navigation</span>
+            <span aria-hidden="true">☰</span>
+          </button>
+          <nav id="portfolio-navigation" className={`nav-links${menuOpen ? ' open' : ''}`}>
             <div className="tab-nav" role="tablist" aria-label="Portfolio sections">
               {navItems.map((item) => (
                 <button
@@ -555,6 +602,7 @@ function App() {
                 <div className="actions">
                   <button className="button" type="button" onClick={() => handleNavClick('projects')}>View projects</button>
                   <button className="button secondary" type="button" onClick={() => handleNavClick('contact')}>Contact me</button>
+                  <a className="button secondary" href="Aniket-Chikane-Resume.txt" download>Download resume</a>
                 </div>
               </div>
 
@@ -586,9 +634,16 @@ function App() {
                 Specialized Java and IBM i developer with experience in core banking systems, financial transaction processing, and backend optimization.
                 I work with ATM/POS flows, card systems, and secure financial messaging using ISO8583 while also contributing to REST and SOAP integrations in Agile environments.
               </p>
-              <div className="chip-list">
-                {skills.map((skill) => (
-                  <span className="chip" key={skill}>{skill}</span>
+              <div className="skill-groups">
+                {skillGroups.map((group) => (
+                  <div className="skill-group" key={group.title}>
+                    <h3>{group.title}</h3>
+                    <div className="chip-list">
+                      {group.items.map((skill) => (
+                        <span className="chip" key={skill}>{skill}</span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
 
@@ -609,6 +664,19 @@ function App() {
                   ))}
                 </div>
               </div>
+
+              <div className="section">
+                <h2>Certifications</h2>
+                <div className="project-grid">
+                  {certifications.map((item) => (
+                    <article className="card" key={item.title}>
+                      <h3>{item.title}</h3>
+                      <p><strong>{item.issuer}</strong></p>
+                      <p>{item.detail}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </section>
           )}
 
@@ -619,7 +687,13 @@ function App() {
                 {projects.map((project) => (
                   <article className="card" key={project.title}>
                     <h3>{project.title}</h3>
+                    <p className="project-role">{project.role}</p>
                     <p>{project.description}</p>
+                    <ul className="project-highlights">
+                      {project.highlights.map((highlight) => (
+                        <li key={highlight}>{highlight}</li>
+                      ))}
+                    </ul>
                     <ul>
                       {project.stack.map((item) => (
                         <li key={item}>{item}</li>
@@ -630,6 +704,9 @@ function App() {
                     </a>
                   </article>
                 ))}
+              </div>
+              <div className="projects-footer">
+                <a className="button secondary" href={githubUrl} target="_blank" rel="noreferrer">See all GitHub repositories</a>
               </div>
             </section>
           )}
@@ -656,6 +733,18 @@ function App() {
                     ))}
                   </div>
                   <a className="button" href={emailLink}>Send me an email</a>
+                  <form className="contact-form" onSubmit={handleContactSubmit}>
+                    <h3>Send a message</h3>
+                    <label htmlFor="contact-name">Name</label>
+                    <input id="contact-name" name="name" type="text" autoComplete="name" required />
+                    <label htmlFor="contact-email">Email</label>
+                    <input id="contact-email" name="email" type="email" autoComplete="email" required />
+                    <label htmlFor="contact-subject">Subject</label>
+                    <input id="contact-subject" name="subject" type="text" required />
+                    <label htmlFor="contact-message">Message</label>
+                    <textarea id="contact-message" name="message" rows="5" required />
+                    <button className="button" type="submit">Open email draft</button>
+                  </form>
                   <div className="profile-links">
                     {profiles.map((profile) => (
                       <a className="profile-link" key={profile.name} href={profile.url} target="_blank" rel="noreferrer">

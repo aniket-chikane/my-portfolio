@@ -1,0 +1,28 @@
+ANIKET BALU CHIKANE
+Java and IBM i Developer
+Pune, Maharashtra | Aniketchikane007@gmail.com | +91 9067103965
+
+PROFILE
+Java and IBM i developer working on core banking systems, ATM/POS transaction processing, card systems, REST APIs, SOAP services, and ISO8583 financial messaging.
+
+EXPERIENCE
+Java Developer Trainee - Euronet India GDC Pune
+Jan 2025 - Present
+- Develop and optimize modules for ATM/POS transaction processing and card lifecycle management.
+- Work with ISO8583 standards across Debit, Credit, and Prepaid card systems.
+- Design RESTful APIs and SOAP web services for backend integrations.
+
+SKILLS
+Java, Spring, Spring Boot, Hibernate, REST APIs, SOAP, ISO8583, RPGLE, CL, DB2, AS400, SQL, MySQL, MS SQL, Git, Jira, Confluence, Power BI
+
+PROJECTS
+Cyberbullying Detection Using Machine Learning
+Sport Registration System
+Library Management System
+ATM Simulator with GUI
+
+EDUCATION
+BE Computer Engineering - Amrutvahini College of Engineering
+
+CERTIFICATION
+Full Stack Development Certification - Yess Infotech, Pune
