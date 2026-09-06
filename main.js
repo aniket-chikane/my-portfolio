@@ -92,12 +92,31 @@ const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
+  { id: 'compiler', label: 'Compiler' },
   { id: 'contact', label: 'Contact' },
   { id: 'game', label: 'Game' },
   { id: 'relax', label: 'Relax' }
 ];
 
 const githubUrl = 'https://github.com/aniket-chikane?tab=repositories';
+const COMPILER_API = '';
+const compilerLanguages = {
+  python: {
+    label: 'Python',
+    version: '3.10.0',
+    starter: 'print("Hello from Python!")\n'
+  },
+  java: {
+    label: 'Java',
+    version: '15.0.2',
+    starter: 'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello from Java!");\n  }\n}\n'
+  },
+  cpp: {
+    label: 'C++',
+    version: '10.2.0',
+    starter: '#include <iostream>\n\nint main() {\n  std::cout << "Hello from C++!" << std::endl;\n  return 0;\n}\n'
+  }
+};
 
 const GAME_SIZE = 20;
 
@@ -208,6 +227,10 @@ function App() {
   const [bubbleScore, setBubbleScore] = useState(0);
   const [bubbleSpeed, setBubbleSpeed] = useState(5);
   const [touchStart, setTouchStart] = useState(null);
+  const [compilerLanguage, setCompilerLanguage] = useState('python');
+  const [compilerCode, setCompilerCode] = useState(compilerLanguages.python.starter);
+  const [compilerOutput, setCompilerOutput] = useState('Run your code to see the output here.');
+  const [compilerStatus, setCompilerStatus] = useState('idle');
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem('portfolio-theme') || 'aurora';
@@ -410,6 +433,53 @@ function App() {
     const message = formData.get('message');
     const body = `Hi Aniket,\n\n${message}\n\nFrom: ${senderName}\nEmail: ${senderEmail}`;
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleCompilerLanguageChange = (event) => {
+    const language = event.target.value;
+    setCompilerLanguage(language);
+    setCompilerCode(compilerLanguages[language].starter);
+    setCompilerOutput('Run your code to see the output here.');
+    setCompilerStatus('idle');
+  };
+
+  const runCompiler = async () => {
+    const selectedLanguage = compilerLanguages[compilerLanguage];
+    setCompilerStatus('running');
+    setCompilerOutput('Compiling and running...');
+
+    if (!COMPILER_API) {
+      setCompilerStatus('error');
+      setCompilerOutput('Online execution is not connected. This static portfolio needs a secure backend compiler endpoint for Python, Java, and C++.');
+      return;
+    }
+
+    try {
+      const response = await fetch(COMPILER_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          language: compilerLanguage,
+          version: selectedLanguage.version,
+          files: [{ name: compilerLanguage === 'java' ? 'Main.java' : `main.${compilerLanguage}`, content: compilerCode }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Compiler service returned ${response.status}.`);
+      }
+
+      const result = await response.json();
+      const compileOutput = result.compile?.output || result.compile?.stderr || '';
+      const runOutput = result.run?.output || result.run?.stderr || '';
+      const output = [compileOutput, runOutput].filter(Boolean).join('\n');
+
+      setCompilerOutput(output || 'Program finished without output.');
+      setCompilerStatus(result.run?.code === 0 ? 'success' : 'error');
+    } catch (error) {
+      setCompilerOutput(`Unable to run the code. ${error.message} Please try again.`);
+      setCompilerStatus('error');
+    }
   };
 
   const activeSnakePalette = themeSnakePalette[theme] || themeSnakePalette.aurora;
@@ -708,6 +778,59 @@ function App() {
               </div>
               <div className="projects-footer">
                 <a className="button secondary" href={githubUrl} target="_blank" rel="noreferrer">See all GitHub repositories</a>
+              </div>
+            </section>
+          )}
+
+          {activeSection === 'compiler' && (
+            <section id="compiler" className="section">
+              <div className="panel compiler-panel">
+                <div className="compiler-header">
+                  <div>
+                    <h2>Code compiler</h2>
+                    <p>Write a small program and run it in Python, Java, or C++.</p>
+                  </div>
+                  <span className={`compiler-status ${compilerStatus}`} role="status">
+                    {compilerStatus === 'running' ? 'Running' : compilerStatus === 'success' ? 'Finished' : compilerStatus === 'error' ? 'Error' : 'Ready'}
+                  </span>
+                </div>
+
+                <div className="compiler-toolbar">
+                  <label htmlFor="compiler-language">Language</label>
+                  <select id="compiler-language" value={compilerLanguage} onChange={handleCompilerLanguageChange}>
+                    {Object.entries(compilerLanguages).map(([language, details]) => (
+                      <option key={language} value={language}>{details.label}</option>
+                    ))}
+                  </select>
+                  <button className="button" type="button" onClick={runCompiler} disabled={compilerStatus === 'running'}>
+                    {compilerStatus === 'running' ? 'Running...' : 'Run code'}
+                  </button>
+                  <button
+                    className="button secondary"
+                    type="button"
+                    onClick={() => setCompilerCode(compilerLanguages[compilerLanguage].starter)}
+                  >
+                    Reset code
+                  </button>
+                </div>
+
+                <div className="compiler-workspace">
+                  <div className="compiler-editor">
+                    <label htmlFor="compiler-code">Source code</label>
+                    <textarea
+                      id="compiler-code"
+                      value={compilerCode}
+                      onChange={(event) => setCompilerCode(event.target.value)}
+                      spellCheck="false"
+                      aria-describedby="compiler-note"
+                    />
+                  </div>
+                  <div className="compiler-output-panel">
+                    <span className="compiler-output-label">Output</span>
+                    <pre aria-live="polite" className={`compiler-output ${compilerStatus}`}>{compilerOutput}</pre>
+                  </div>
+                </div>
+                <p id="compiler-note" className="compiler-note">The editor is ready for a secure compiler backend. Never enter passwords, API keys, or private data into a code runner.</p>
               </div>
             </section>
           )}

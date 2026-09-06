@@ -628,6 +628,135 @@ a {
   margin-top: 1rem;
 }
 
+.compiler-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.compiler-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.compiler-header h2 {
+  margin: 0 0 0.35rem;
+}
+
+.compiler-header p {
+  margin: 0;
+}
+
+.compiler-status {
+  flex: 0 0 auto;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.compiler-status.running {
+  color: var(--accent);
+}
+
+.compiler-status.success {
+  color: #8df4bd;
+  border-color: rgba(141, 244, 189, 0.45);
+}
+
+.compiler-status.error {
+  color: #ff9f9f;
+  border-color: rgba(255, 159, 159, 0.45);
+}
+
+.compiler-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.compiler-toolbar label,
+.compiler-editor label,
+.compiler-output-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.compiler-toolbar select {
+  min-width: 130px;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+}
+
+.compiler-toolbar .button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.compiler-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 1rem;
+}
+
+.compiler-editor,
+.compiler-output-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.compiler-editor textarea,
+.compiler-output {
+  min-height: 320px;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  padding: 1rem;
+  background: #061018;
+  color: #dfffea;
+  font: 0.9rem/1.55 'Courier New', monospace;
+  tab-size: 2;
+}
+
+.compiler-editor textarea {
+  width: 100%;
+  resize: vertical;
+  outline: none;
+}
+
+.compiler-editor textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.compiler-output {
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.compiler-output.error {
+  color: #ffb3b3;
+}
+
+.compiler-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .game-panel {
   display: flex;
   flex-direction: column;
@@ -1308,6 +1437,29 @@ a {
 
   .game-mode-selector {
     flex-direction: column;
+  }
+
+  .compiler-header,
+  .compiler-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .compiler-header {
+    flex-direction: column;
+  }
+
+  .compiler-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .compiler-toolbar select,
+  .compiler-toolbar .button {
+    width: 100%;
+  }
+
+  .compiler-workspace {
+    display: grid;
   }
 
   .mode-btn {
